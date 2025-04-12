@@ -118,6 +118,37 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- ======================================================================== -->
+
+		<!--
+		  Spring Boot 3.4.4 depends on Spring Framework 6.1.x.
+		  However, some transitive dependencies (e.g. springdoc-openapi) were pulling in an incompatible version (6.2.5),
+		  which caused NoSuchMethodError at runtime.
+
+		  To fix this, we explicitly enforce Spring Framework 6.1.8 to align with Spring Boot.
+		-->
+
+		<!-- Spring Web -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>6.1.8</version>
+		</dependency>
+
+		<!-- Spring Web MVC -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>6.1.8</version>
+		</dependency>
+
+		<!-- Spring Context -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>6.1.8</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -130,6 +161,7 @@
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
+							<version>1.18.30</version>
 						</path>
 					</annotationProcessorPaths>
 				</configuration>
