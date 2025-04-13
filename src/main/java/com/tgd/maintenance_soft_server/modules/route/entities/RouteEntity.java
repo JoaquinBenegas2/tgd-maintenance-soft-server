@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,9 @@ public class RouteEntity extends BaseEntity {
 
     @Column(name = "periodicity_in_days")
     private Integer periodicityInDays;
+
+    @Column(name = "start_date")
+    private LocalDate startDate;
 
     @Enumerated(EnumType.STRING)
     private RouteStatus status;
