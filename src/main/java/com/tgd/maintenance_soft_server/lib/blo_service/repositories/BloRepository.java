@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 @NoRepositoryBean
-public interface BloRepository<E, ID, U> extends JpaRepository<E, ID> {
-    List<E> findAllByUser(U user);
-    Optional<E> findByIdAndUser(ID id, U user);
+public interface BloRepository<E, ID, IE> extends JpaRepository<E, ID> {
+    List<E> findAllByIdentifyingEntity(IE identifyingEntity);
+    Optional<E> findByIdAndIdentifyingEntity(ID id, IE identifyingEntity);
 }

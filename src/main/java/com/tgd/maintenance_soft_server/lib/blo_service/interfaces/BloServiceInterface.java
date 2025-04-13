@@ -8,16 +8,16 @@ import java.util.List;
 // Base Logic Service Interface
 
 @Service
-public interface BloServiceInterface<REQ, RES, E extends UserIdentifiable<U>, ID, U> {
-    List<RES> getAll(U user);
+public interface BloServiceInterface<REQ, RES, E extends IdentifyingEntity<IE>, ID, IE> {
+    List<RES> getAll(IE identifyingEntity);
 
-    RES getById(ID id, U user);
+    RES getById(ID id, IE identifyingEntity);
 
-    RES create(U user, REQ request);
+    RES create(IE identifyingEntity, REQ request);
 
-    RES update(ID id, U user, REQ request);
+    RES update(ID id, IE identifyingEntity, REQ request);
 
-    void deleteById(ID id, U user);
+    void deleteById(ID id, IE identifyingEntity);
 
-    BloRepository<E, ID, U> getRepository();
+    BloRepository<E, ID, IE> getRepository();
 }
