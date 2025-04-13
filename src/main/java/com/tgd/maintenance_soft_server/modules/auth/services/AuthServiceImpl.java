@@ -1,7 +1,7 @@
 package com.tgd.maintenance_soft_server.modules.auth.services;
 
-import com.tgd.maintenance_soft_server.modules.users.entities.UserEntity;
-import com.tgd.maintenance_soft_server.modules.users.repositories.UserRepository;
+import com.tgd.maintenance_soft_server.modules.user.entities.UserEntity;
+import com.tgd.maintenance_soft_server.modules.user.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
