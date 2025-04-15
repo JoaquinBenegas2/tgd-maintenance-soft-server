@@ -29,10 +29,10 @@ public class FormFieldEntity extends BaseEntity {
     @OneToMany(mappedBy = "formField", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FormOptionEntity> options = new ArrayList<>();
 
-    @Column(name = "required")
+    @Column(name = "is_required")
     private Boolean required;
 
-    @Column(name = "order")
+    @Column(name = "field_order")
     private Integer order;
 
     @ManyToOne

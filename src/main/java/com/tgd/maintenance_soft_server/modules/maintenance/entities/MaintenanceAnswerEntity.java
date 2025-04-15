@@ -30,6 +30,6 @@ public class MaintenanceAnswerEntity extends BaseEntity {
     @JoinColumn(name = "form_field_id")
     private FormFieldEntity formField;
 
-    @Column(name = "value")
+    @Column(name = "answer_value")
     private String value;
 }

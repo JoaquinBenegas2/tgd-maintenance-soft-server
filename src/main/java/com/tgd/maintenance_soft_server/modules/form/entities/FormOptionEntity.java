@@ -16,7 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class FormOptionEntity extends BaseEntity {
 
-    @Column(name = "value")
+    @Column(name = "option_value")
     private String value;
 
     @ManyToOne
