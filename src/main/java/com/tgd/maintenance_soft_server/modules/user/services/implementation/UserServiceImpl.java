@@ -1,5 +1,6 @@
 package com.tgd.maintenance_soft_server.modules.user.services.implementation;
 
+import com.tgd.maintenance_soft_server.modules.company.dtos.CompanyResponseDto;
 import com.tgd.maintenance_soft_server.modules.plant.dtos.PlantResponseDto;
 import com.tgd.maintenance_soft_server.modules.user.entities.UserEntity;
 import com.tgd.maintenance_soft_server.modules.user.repositories.UserRepository;
@@ -20,12 +21,20 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
 
     @Override
-    public List<PlantResponseDto> getAssignedPlants(String auth0Id) {
-        UserEntity user = userRepository.findByAuth0Id(auth0Id)
+    public List<PlantResponseDto> getAssignedPlants(Long userId) {
+        UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         return user.getAssignedPlants().stream()
                 .map(plant -> modelMapper.map(plant, PlantResponseDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public CompanyResponseDto getAssignedCompany(Long userId) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        return modelMapper.map(user.getCompany(), CompanyResponseDto.class);
     }
 }

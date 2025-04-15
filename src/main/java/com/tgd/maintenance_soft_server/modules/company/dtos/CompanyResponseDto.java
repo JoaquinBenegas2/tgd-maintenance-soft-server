@@ -1,6 +1,6 @@
 package com.tgd.maintenance_soft_server.modules.company.dtos;
 
-import com.tgd.maintenance_soft_server.modules.plant.dtos.PlantResponseDto;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tgd.maintenance_soft_server.modules.user.dtos.UserResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +19,6 @@ public class CompanyResponseDto {
 
     private String name;
 
-    private List<PlantResponseDto> plants;
-
+    @JsonProperty("assigned_users")
     private List<UserResponseDto> assignedUsers;
 }

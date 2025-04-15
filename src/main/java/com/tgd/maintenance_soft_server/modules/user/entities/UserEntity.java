@@ -28,6 +28,12 @@ public class UserEntity extends BaseEntity {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "role")
+    private String role;
+
+    @Column(name = "image")
+    private String image;
+
     @ManyToOne
     @JoinColumn(name = "company_id")
     private CompanyEntity company;
