@@ -7,21 +7,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponseDto {
-
-    private Long id;
+public class UserRequestDto {
 
     private String email;
 
     private String name;
 
-    private String image;
+    @JsonProperty("role_id")
+    private String roleId;
 
-    private String role;
+    private String password;
 }

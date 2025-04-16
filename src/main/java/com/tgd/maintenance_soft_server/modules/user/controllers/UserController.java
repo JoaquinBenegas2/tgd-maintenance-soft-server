@@ -1,8 +1,11 @@
 package com.tgd.maintenance_soft_server.modules.user.controllers;
 
+import com.tgd.maintenance_soft_server.modules.auth.services.Auth0UserService;
 import com.tgd.maintenance_soft_server.modules.auth.services.AuthService;
 import com.tgd.maintenance_soft_server.modules.company.dtos.CompanyResponseDto;
 import com.tgd.maintenance_soft_server.modules.plant.dtos.PlantResponseDto;
+import com.tgd.maintenance_soft_server.modules.user.dtos.UserRequestDto;
+import com.tgd.maintenance_soft_server.modules.user.dtos.UserResponseDto;
 import com.tgd.maintenance_soft_server.modules.user.entities.UserEntity;
 import com.tgd.maintenance_soft_server.modules.user.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,6 +27,7 @@ public class UserController {
 
     private final AuthService authService;
     private final UserService userService;
+    private final Auth0UserService auth0UserService;
 
     @GetMapping("/plants")
     @Operation(description = "Retrieves the list of plants to which the user is assigned")
@@ -37,5 +41,11 @@ public class UserController {
     public ResponseEntity<CompanyResponseDto> getAssignedCompany(@AuthenticationPrincipal Jwt jwt) {
         UserEntity user = authService.getAuthenticatedUser(jwt);
         return ResponseEntity.ok(userService.getAssignedCompany(user.getId()));
+    }
+
+    @PostMapping
+    public ResponseEntity<UserResponseDto> createUser(@AuthenticationPrincipal Jwt jwt, @RequestBody UserRequestDto userRequestDto) {
+        UserEntity user = authService.getAuthenticatedUser(jwt);
+        return ResponseEntity.ok(auth0UserService.createUserAndAssignRole(userRequestDto, user.getId()));
     }
 }

@@ -1,5 +1,6 @@
-package com.tgd.maintenance_soft_server.modules.auth.services;
+package com.tgd.maintenance_soft_server.modules.auth.services.implementation;
 
+import com.tgd.maintenance_soft_server.modules.auth.services.AuthService;
 import com.tgd.maintenance_soft_server.modules.user.entities.UserEntity;
 import com.tgd.maintenance_soft_server.modules.user.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,8 @@ public class AuthServiceImpl implements AuthService {
                     newUser.setAuth0Id(auth0Id);
                     newUser.setName(jwt.getClaimAsString("name"));
                     newUser.setEmail(jwt.getClaimAsString("email"));
+                    newUser.setImage(jwt.getClaimAsString("picture"));
+                    newUser.setRole(jwt.getClaimAsString("role"));
 
                     return userRepository.save(newUser);
                 });
