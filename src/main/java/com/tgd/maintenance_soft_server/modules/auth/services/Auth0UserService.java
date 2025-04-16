@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 @Service
 public interface Auth0UserService {
 
-    UserResponseDto createUserAndAssignRole(UserRequestDto userRequestDto, Long userId);
+    UserResponseDto createUserAndAssignRole(Long userId, UserRequestDto userRequestDto);
 
-    String getRoleNameById(String roleId);
+    UserResponseDto updateUser(Long userId, UserRequestDto userRequestDto);
+
+    void deleteUser(Long id);
 }

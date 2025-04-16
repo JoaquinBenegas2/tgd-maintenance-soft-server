@@ -44,8 +44,22 @@ public class UserController {
     }
 
     @PostMapping
+    @Operation(description = "Creates a new user in Auth0 and assigns a role")
     public ResponseEntity<UserResponseDto> createUser(@AuthenticationPrincipal Jwt jwt, @RequestBody UserRequestDto userRequestDto) {
         UserEntity user = authService.getAuthenticatedUser(jwt);
-        return ResponseEntity.ok(auth0UserService.createUserAndAssignRole(userRequestDto, user.getId()));
+        return ResponseEntity.ok(auth0UserService.createUserAndAssignRole(user.getId(), userRequestDto));
+    }
+
+    @Operation(description = "Updates a user in Auth0 and in the local database")
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponseDto> updateUser(@PathVariable Long id, @RequestBody UserRequestDto userRequestDto) {
+        return ResponseEntity.ok(auth0UserService.updateUser(id, userRequestDto));
+    }
+
+    @Operation(description = "Deletes a user from Auth0 and from the local database")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        auth0UserService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 }
