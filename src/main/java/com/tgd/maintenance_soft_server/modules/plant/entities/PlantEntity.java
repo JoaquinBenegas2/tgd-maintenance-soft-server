@@ -38,4 +38,18 @@ public class PlantEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private List<UserEntity> assignedUsers = new ArrayList<>();
+
+    public void assignUser(UserEntity user) {
+        if (!assignedUsers.contains(user)) {
+            assignedUsers.add(user);
+            user.getAssignedPlants().add(this);
+        }
+    }
+
+    public void unassignUser(UserEntity user) {
+        if (assignedUsers.contains(user)) {
+            assignedUsers.remove(user);
+            user.getAssignedPlants().remove(this);
+        }
+    }
 }
