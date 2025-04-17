@@ -1,8 +1,11 @@
 package com.tgd.maintenance_soft_server.modules.auth.services.implementation;
 
 import com.tgd.maintenance_soft_server.modules.auth.services.AuthService;
+import com.tgd.maintenance_soft_server.modules.plant.entities.PlantEntity;
+import com.tgd.maintenance_soft_server.modules.plant.repositories.PlantRepository;
 import com.tgd.maintenance_soft_server.modules.user.entities.UserEntity;
 import com.tgd.maintenance_soft_server.modules.user.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
+    private final PlantRepository plantRepository;
 
     @Override
     public UserEntity getAuthenticatedUser(Jwt jwt) {
@@ -28,5 +32,11 @@ public class AuthServiceImpl implements AuthService {
 
                     return userRepository.save(newUser);
                 });
+    }
+
+    @Override
+    public PlantEntity getSelectedPlant(Long plantId) {
+        return plantRepository.findById(plantId)
+                .orElseThrow(() -> new EntityNotFoundException("Plant not found"));
     }
 }
