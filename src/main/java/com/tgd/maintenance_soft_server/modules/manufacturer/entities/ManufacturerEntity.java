@@ -1,6 +1,7 @@
 package com.tgd.maintenance_soft_server.modules.manufacturer.entities;
 
 import com.tgd.maintenance_soft_server.interfaces.BaseEntity;
+import com.tgd.maintenance_soft_server.interfaces.BaseIdentifyingEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -16,7 +17,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class  ManufacturerEntity extends BaseEntity {
+public class  ManufacturerEntity extends BaseIdentifyingEntity {
 
     @Column(name = "name")
     private String name;

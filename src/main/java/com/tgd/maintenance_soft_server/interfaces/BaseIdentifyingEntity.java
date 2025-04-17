@@ -17,15 +17,15 @@ import lombok.Setter;
 public class BaseIdentifyingEntity extends BaseEntity implements IdentifyingEntity<PlantEntity> {
 
     @ManyToOne
-    private PlantEntity plant;
+    private PlantEntity identifyingEntity;
 
     @Override
     public void setIdentifyingEntity(PlantEntity plant) {
-        this.plant = plant;
+        this.identifyingEntity = plant;
     }
 
     @Override
     public PlantEntity getIdentifyingEntity() {
-        return this.plant;
+        return this.identifyingEntity;
     }
 }
