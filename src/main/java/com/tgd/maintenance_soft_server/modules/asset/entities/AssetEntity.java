@@ -1,6 +1,7 @@
 package com.tgd.maintenance_soft_server.modules.asset.entities;
 
 import com.tgd.maintenance_soft_server.interfaces.BaseEntity;
+import com.tgd.maintenance_soft_server.interfaces.BaseIdentifyingEntity;
 import com.tgd.maintenance_soft_server.modules.asset.models.AssetStatus;
 import com.tgd.maintenance_soft_server.modules.manufacturer.entities.ManufacturerEntity;
 import com.tgd.maintenance_soft_server.modules.sector.entities.SectorEntity;
@@ -19,7 +20,7 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AssetEntity extends BaseEntity {
+public class AssetEntity extends BaseIdentifyingEntity {
 
     @Column(name = "name")
     private String name;
