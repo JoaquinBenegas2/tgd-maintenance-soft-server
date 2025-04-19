@@ -1,6 +1,7 @@
 package com.tgd.maintenance_soft_server.modules.element.entities;
 
 import com.tgd.maintenance_soft_server.interfaces.BaseEntity;
+import com.tgd.maintenance_soft_server.interfaces.BaseIdentifyingEntity;
 import com.tgd.maintenance_soft_server.modules.component.entities.ComponentEntity;
 import com.tgd.maintenance_soft_server.modules.element.models.ElementStatus;
 import com.tgd.maintenance_soft_server.modules.manufacturer.entities.ManufacturerEntity;
@@ -23,7 +24,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ElementEntity extends BaseEntity {
+public class ElementEntity extends BaseIdentifyingEntity {
 
     @Column(name = "name")
     private String name;

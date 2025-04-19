@@ -1,6 +1,7 @@
 package com.tgd.maintenance_soft_server.modules.component.entities;
 
 import com.tgd.maintenance_soft_server.interfaces.BaseEntity;
+import com.tgd.maintenance_soft_server.interfaces.BaseIdentifyingEntity;
 import com.tgd.maintenance_soft_server.modules.asset.entities.AssetEntity;
 import com.tgd.maintenance_soft_server.modules.component.models.ComponentStatus;
 import com.tgd.maintenance_soft_server.modules.manufacturer.entities.ManufacturerEntity;
@@ -17,8 +18,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ComponentEntity extends BaseEntity {
+public class ComponentEntity extends BaseIdentifyingEntity {
 
+    public static Object ComponentStatus;
     @Column(name = "name")
     private String name;
 

@@ -2,6 +2,7 @@ package com.tgd.maintenance_soft_server.modules.asset.services;
 
 import com.tgd.maintenance_soft_server.modules.asset.dtos.AssetRequestDto;
 import com.tgd.maintenance_soft_server.modules.asset.dtos.AssetResponseDto;
+import com.tgd.maintenance_soft_server.modules.component.dtos.ComponentResponseDto;
 import com.tgd.maintenance_soft_server.modules.plant.entities.PlantEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
