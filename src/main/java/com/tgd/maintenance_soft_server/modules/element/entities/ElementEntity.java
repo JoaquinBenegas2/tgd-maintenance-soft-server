@@ -32,8 +32,8 @@ public class ElementEntity extends BaseIdentifyingEntity {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "component_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "component_id", nullable = false)
     private ComponentEntity component;
 
     @ManyToOne

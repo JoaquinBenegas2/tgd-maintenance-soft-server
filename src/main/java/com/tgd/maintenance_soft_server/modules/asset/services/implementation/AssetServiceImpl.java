@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -132,6 +133,7 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
+    @Transactional
     public void deleteAssetById(Long id, PlantEntity plantEntity) {
         AssetEntity existingAsset = assetRepository.findByIdAndIdentifyingEntity(id, plantEntity)
                 .orElseThrow(() -> new EntityNotFoundException("Asset not found or not associated with the plant"));

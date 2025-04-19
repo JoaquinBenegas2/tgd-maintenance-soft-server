@@ -4,12 +4,16 @@ import com.tgd.maintenance_soft_server.interfaces.BaseEntity;
 import com.tgd.maintenance_soft_server.interfaces.BaseIdentifyingEntity;
 import com.tgd.maintenance_soft_server.modules.asset.entities.AssetEntity;
 import com.tgd.maintenance_soft_server.modules.component.models.ComponentStatus;
+import com.tgd.maintenance_soft_server.modules.element.entities.ElementEntity;
 import com.tgd.maintenance_soft_server.modules.manufacturer.entities.ManufacturerEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "COMPONENTS")
@@ -27,8 +31,8 @@ public class ComponentEntity extends BaseIdentifyingEntity {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "asset_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "asset_id", nullable = false)
     private AssetEntity asset;
 
     @ManyToOne
@@ -43,4 +47,7 @@ public class ComponentEntity extends BaseIdentifyingEntity {
 
     @Enumerated(EnumType.STRING)
     private ComponentStatus status;
+
+    @OneToMany(mappedBy = "component", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ElementEntity> elements = new ArrayList<>();
 }

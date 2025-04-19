@@ -3,6 +3,7 @@ package com.tgd.maintenance_soft_server.modules.asset.entities;
 import com.tgd.maintenance_soft_server.interfaces.BaseEntity;
 import com.tgd.maintenance_soft_server.interfaces.BaseIdentifyingEntity;
 import com.tgd.maintenance_soft_server.modules.asset.models.AssetStatus;
+import com.tgd.maintenance_soft_server.modules.component.entities.ComponentEntity;
 import com.tgd.maintenance_soft_server.modules.manufacturer.entities.ManufacturerEntity;
 import com.tgd.maintenance_soft_server.modules.sector.entities.SectorEntity;
 import jakarta.persistence.*;
@@ -12,6 +13,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "ASSETS")
@@ -47,4 +50,7 @@ public class AssetEntity extends BaseIdentifyingEntity {
 
     @Column(name = "installation_date")
     private LocalDate installationDate;
+
+    @OneToMany(mappedBy = "asset", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ComponentEntity> components = new ArrayList<>();
 }
