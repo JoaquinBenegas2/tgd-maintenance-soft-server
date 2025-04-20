@@ -2,6 +2,7 @@ package com.tgd.maintenance_soft_server.interfaces;
 
 import com.tgd.maintenance_soft_server.lib.blo_service.interfaces.IdentifyingEntity;
 import com.tgd.maintenance_soft_server.modules.plant.entities.PlantEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;

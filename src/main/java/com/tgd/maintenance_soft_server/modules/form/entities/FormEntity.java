@@ -1,6 +1,7 @@
 package com.tgd.maintenance_soft_server.modules.form.entities;
 
 import com.tgd.maintenance_soft_server.interfaces.BaseEntity;
+import com.tgd.maintenance_soft_server.interfaces.BaseIdentifyingEntity;
 import com.tgd.maintenance_soft_server.modules.maintenance.entities.MaintenanceTypeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class FormEntity extends BaseEntity {
+public class FormEntity extends BaseIdentifyingEntity {
 
     @Column(name = "name")
     private String name;
@@ -31,5 +32,5 @@ public class FormEntity extends BaseEntity {
     private MaintenanceTypeEntity maintenanceType;
 
     @OneToMany(mappedBy = "form")
-    private List<FormFieldEntity> options = new ArrayList<>();
+    private List<FormFieldEntity> fields = new ArrayList<>();
 }

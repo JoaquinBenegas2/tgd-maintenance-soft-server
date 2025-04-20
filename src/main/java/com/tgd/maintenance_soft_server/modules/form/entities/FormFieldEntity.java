@@ -1,12 +1,14 @@
 package com.tgd.maintenance_soft_server.modules.form.entities;
 
 import com.tgd.maintenance_soft_server.interfaces.BaseEntity;
+import com.tgd.maintenance_soft_server.interfaces.BaseIdentifyingEntity;
 import com.tgd.maintenance_soft_server.modules.form.models.FormFieldType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class FormFieldEntity extends BaseEntity {
+public class FormFieldEntity extends BaseIdentifyingEntity {
 
     @Column(name = "name")
     private  String name;
