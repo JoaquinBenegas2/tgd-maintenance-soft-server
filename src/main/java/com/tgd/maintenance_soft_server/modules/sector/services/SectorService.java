@@ -23,4 +23,12 @@ public class SectorService extends BloService<
     public SectorRepository getRepository() {
         return sectorRepository;
     }
+
+    @Override
+    protected SectorEntity toEntity(SectorRequestDto request) {
+        SectorEntity sectorEntity = modelMapper.map(request, SectorEntity.class);
+        sectorEntity.setActive(true);
+
+        return sectorEntity;
+    }
 }

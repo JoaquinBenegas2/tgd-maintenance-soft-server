@@ -23,4 +23,12 @@ public class ManufacturerService extends BloService<
     public ManufacturerRepository getRepository() {
         return manufacturerRepository;
     }
+
+    @Override
+    protected ManufacturerEntity toEntity(ManufacturerRequestDto request) {
+        ManufacturerEntity manufacturerEntity = modelMapper.map(request, ManufacturerEntity.class);
+        manufacturerEntity.setActive(true);
+
+        return manufacturerEntity;
+    }
 }
