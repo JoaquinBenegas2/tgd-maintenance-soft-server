@@ -1,6 +1,7 @@
 package com.tgd.maintenance_soft_server.modules.maintenance.entities;
 
 import com.tgd.maintenance_soft_server.interfaces.BaseEntity;
+import com.tgd.maintenance_soft_server.interfaces.BaseIdentifyingEntity;
 import com.tgd.maintenance_soft_server.modules.element.entities.ElementEntity;
 import com.tgd.maintenance_soft_server.modules.route.entities.RouteEntity;
 import jakarta.persistence.*;
@@ -20,7 +21,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MaintenanceEntity extends BaseEntity {
+public class MaintenanceEntity extends BaseIdentifyingEntity {
 
     @Column(name = "name")
     private String name;
@@ -39,6 +40,11 @@ public class MaintenanceEntity extends BaseEntity {
     @Column(name = "maintenance_date")
     private LocalDate maintenanceDate;
 
-    @OneToMany(mappedBy = "maintenance")
+    @OneToMany(
+            mappedBy = "maintenance",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
     private List<MaintenanceAnswerEntity> answers = new ArrayList<>();
 }

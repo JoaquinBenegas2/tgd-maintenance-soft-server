@@ -3,6 +3,7 @@ package com.tgd.maintenance_soft_server.modules.route.controllers;
 import com.tgd.maintenance_soft_server.modules.auth.services.AuthService;
 import com.tgd.maintenance_soft_server.modules.plant.dtos.PlantResponseDto;
 import com.tgd.maintenance_soft_server.modules.plant.entities.PlantEntity;
+import com.tgd.maintenance_soft_server.modules.route.dtos.ProgressRouteResponseDto;
 import com.tgd.maintenance_soft_server.modules.route.dtos.RouteRequestDto;
 import com.tgd.maintenance_soft_server.modules.route.dtos.RouteResponseDto;
 import com.tgd.maintenance_soft_server.modules.route.dtos.RouteUpdateRequestDto;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/routes")
@@ -33,6 +35,24 @@ public class RouteController {
     public ResponseEntity<RouteResponseDto> getRouteById(@RequestHeader("x-plant-id") Long plantId, @PathVariable Long id) {
         PlantEntity plantEntity = authService.getSelectedPlant(plantId);
         return ResponseEntity.ok(routeService.getRouteById(id, plantEntity));
+    }
+
+    @GetMapping("/today")
+    public ResponseEntity<List<ProgressRouteResponseDto>> getTodayRoutes(@RequestHeader("x-plant-id") Long plantId) {
+        PlantEntity plantEntity = authService.getSelectedPlant(plantId);
+        return ResponseEntity.ok(routeService.getTodayRoutes(plantEntity));
+    }
+
+    @GetMapping("/week")
+    public ResponseEntity<Map<Integer, List<ProgressRouteResponseDto>>> getRoutesOfTheWeek(@RequestHeader("x-plant-id") Long plantId) {
+        PlantEntity plantEntity = authService.getSelectedPlant(plantId);
+        return ResponseEntity.ok(routeService.getRoutesOfTheWeek(plantEntity));
+    }
+
+    @GetMapping("/delayed")
+    public ResponseEntity<List<ProgressRouteResponseDto>> getDelayedRoutes(@RequestHeader("x-plant-id") Long plantId) {
+        PlantEntity plantEntity = authService.getSelectedPlant(plantId);
+        return ResponseEntity.ok(routeService.getDelayedRoutes(plantEntity));
     }
 
     @PostMapping

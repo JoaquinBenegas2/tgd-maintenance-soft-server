@@ -1,0 +1,34 @@
+package com.tgd.maintenance_soft_server.modules.maintenance.repositories;
+
+import com.tgd.maintenance_soft_server.lib.blo_service.repositories.BloRepository;
+import com.tgd.maintenance_soft_server.modules.maintenance.entities.MaintenanceEntity;
+import com.tgd.maintenance_soft_server.modules.plant.entities.PlantEntity;
+import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+
+
+@Repository
+public interface MaintenanceRepository extends BloRepository<MaintenanceEntity, Long, PlantEntity> {
+    List<MaintenanceEntity> findAllByRouteIdAndElementIdAndMaintenanceDateAndIdentifyingEntity(
+            Long routeId,
+            Long elementId,
+            LocalDate maintenanceDate,
+            PlantEntity plantEntity
+    );
+
+    List<MaintenanceEntity> findAllByRouteIdAndElementIdAndIdentifyingEntity(
+            Long routeId,
+            Long elementId,
+            PlantEntity plantEntity
+    );
+
+    List<MaintenanceEntity> findAllByRouteIdAndElementIdAndMaintenanceDateGreaterThanEqualAndIdentifyingEntity(
+            Long routeId,
+            Long elementId,
+            LocalDate maintenanceDate,
+            PlantEntity identifyingEntity
+    );
+}
