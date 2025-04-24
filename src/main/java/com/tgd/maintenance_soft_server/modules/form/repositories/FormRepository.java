@@ -6,7 +6,12 @@ import com.tgd.maintenance_soft_server.modules.plant.entities.PlantEntity;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface FormRepository extends BloRepository<FormEntity, Long, PlantEntity>, JpaSpecificationExecutor<FormEntity> {
-    
+    List<FormEntity> findAllByMaintenanceTypeIdInAndIdentifyingEntity(
+            List<Long> maintenanceTypeIds,
+            PlantEntity plant
+    );
 }

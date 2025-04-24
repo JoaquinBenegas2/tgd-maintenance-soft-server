@@ -3,6 +3,7 @@ package com.tgd.maintenance_soft_server.modules.maintenance.controllers;
 import com.tgd.maintenance_soft_server.modules.auth.services.AuthService;
 import com.tgd.maintenance_soft_server.modules.maintenance.dtos.MaintenanceTypeRequestDto;
 import com.tgd.maintenance_soft_server.modules.maintenance.dtos.MaintenanceTypeResponseDto;
+import com.tgd.maintenance_soft_server.modules.maintenance.dtos.MaintenanceTypeWithFormsResponseDto;
 import com.tgd.maintenance_soft_server.modules.maintenance.services.MaintenanceTypeService;
 import com.tgd.maintenance_soft_server.modules.plant.entities.PlantEntity;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,12 @@ public class MaintenanceTypeController {
     public ResponseEntity<List<MaintenanceTypeResponseDto>> getMaintenanceTypeList(@RequestHeader("x-plant-id") Long plantId) {
         PlantEntity plantEntity = authService.getSelectedPlant(plantId);
         return ResponseEntity.ok(maintenanceTypeService.getAll(plantEntity));
+    }
+
+    @GetMapping("/with-forms")
+    public ResponseEntity<List<MaintenanceTypeWithFormsResponseDto>> getMaintenanceTypeWithFormsList(@RequestHeader("x-plant-id") Long plantId) {
+        PlantEntity plantEntity = authService.getSelectedPlant(plantId);
+        return ResponseEntity.ok(maintenanceTypeService.getMaintenanceTypeWithFormsList(plantEntity));
     }
     
     @GetMapping("/{id}")
