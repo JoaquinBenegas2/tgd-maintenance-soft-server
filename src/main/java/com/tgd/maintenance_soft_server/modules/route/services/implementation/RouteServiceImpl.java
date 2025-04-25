@@ -68,6 +68,7 @@ public class RouteServiceImpl
     }
 
     @Override
+    @Transactional
     public RouteResponseDto createRoute(RouteRequestDto routeRequestDto, PlantEntity plantEntity) {
         RouteEntity route = new RouteEntity();
         route.setName(routeRequestDto.getName());
@@ -93,6 +94,7 @@ public class RouteServiceImpl
     }
 
     @Override
+    @Transactional
     public RouteResponseDto updateRoute(Long id, RouteUpdateRequestDto dto, PlantEntity plantEntity) {
         RouteEntity route = routeRepository.findByIdAndIdentifyingEntity(id, plantEntity)
                 .orElseThrow(() -> new RuntimeException("Route not found or not associated with plant"));

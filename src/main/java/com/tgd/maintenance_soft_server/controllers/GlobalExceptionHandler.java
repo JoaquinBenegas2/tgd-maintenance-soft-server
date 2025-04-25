@@ -2,6 +2,7 @@ package com.tgd.maintenance_soft_server.controllers;
 
 import com.tgd.maintenance_soft_server.dtos.common.ApiError;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,6 +15,12 @@ import java.time.ZonedDateTime;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ApiError> handleDataIntegrity(DataIntegrityViolationException ex) {
+        String userMessage = "No se puede eliminar porque existen registros relacionados.";
+        return buildErrorResponse(userMessage, HttpStatus.CONFLICT);
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleError(Exception exception) {
