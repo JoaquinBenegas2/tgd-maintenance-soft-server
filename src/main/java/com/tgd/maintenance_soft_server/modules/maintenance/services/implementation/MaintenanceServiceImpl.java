@@ -9,9 +9,7 @@ import com.tgd.maintenance_soft_server.modules.form.entities.FormEntity;
 import com.tgd.maintenance_soft_server.modules.form.entities.FormFieldEntity;
 import com.tgd.maintenance_soft_server.modules.form.repositories.FormFieldRepository;
 import com.tgd.maintenance_soft_server.modules.form.repositories.FormRepository;
-import com.tgd.maintenance_soft_server.modules.maintenance.dtos.MaintenanceAnswerResponseDto;
-import com.tgd.maintenance_soft_server.modules.maintenance.dtos.MaintenanceRequestDto;
-import com.tgd.maintenance_soft_server.modules.maintenance.dtos.MaintenanceResponseDto;
+import com.tgd.maintenance_soft_server.modules.maintenance.dtos.*;
 import com.tgd.maintenance_soft_server.modules.maintenance.entities.MaintenanceAnswerEntity;
 import com.tgd.maintenance_soft_server.modules.maintenance.entities.MaintenanceEntity;
 import com.tgd.maintenance_soft_server.modules.maintenance.repositories.MaintenanceRepository;
@@ -95,6 +93,42 @@ public class MaintenanceServiceImpl
         MaintenanceEntity savedMaintenance = maintenanceRepository.save(maintenanceEntity);
 
         MaintenanceResponseDto responseDto = mapEntityToDto(savedMaintenance);
+        responseDto.setForm(modelMapper.map(formEntity, FormResponseDto.class));
+
+        return responseDto;
+    }
+
+    @Override
+    @Transactional
+    public MaintenanceResponseDto updateMaintenance(Long maintenanceId, PlantEntity plantEntity, MaintenanceUpdateRequestDto updateDto) {
+        MaintenanceEntity maintenanceEntity = maintenanceRepository
+                .findByIdAndIdentifyingEntity(maintenanceId, plantEntity)
+                .orElseThrow(() -> new RuntimeException("Maintenance not found or not associated with plant"));
+
+        FormEntity formEntity = maintenanceEntity.getAnswers().stream()
+                .findFirst()
+                .map(MaintenanceAnswerEntity::getForm)
+                .orElseThrow(() -> new RuntimeException("No associated form found in existing answers"));
+
+        maintenanceEntity.getAnswers().clear();
+
+        for (MaintenanceAnswerRequestDto answerDto : updateDto.getAnswers()) {
+            FormFieldEntity formFieldEntity = formFieldRepository
+                    .findByIdAndIdentifyingEntity(answerDto.getFormFieldId(), plantEntity)
+                    .orElseThrow(() -> new RuntimeException("Form field not found or not associated with plant"));
+
+            MaintenanceAnswerEntity maintenanceAnswerEntity = new MaintenanceAnswerEntity();
+            maintenanceAnswerEntity.setMaintenance(maintenanceEntity);
+            maintenanceAnswerEntity.setForm(formEntity);
+            maintenanceAnswerEntity.setFormField(formFieldEntity);
+            maintenanceAnswerEntity.setValue(answerDto.getValue());
+
+            maintenanceEntity.getAnswers().add(maintenanceAnswerEntity);
+        }
+
+        MaintenanceEntity saved = maintenanceRepository.save(maintenanceEntity);
+
+        MaintenanceResponseDto responseDto = mapEntityToDto(saved);
         responseDto.setForm(modelMapper.map(formEntity, FormResponseDto.class));
 
         return responseDto;

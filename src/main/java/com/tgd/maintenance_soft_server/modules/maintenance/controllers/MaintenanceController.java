@@ -3,6 +3,7 @@ package com.tgd.maintenance_soft_server.modules.maintenance.controllers;
 import com.tgd.maintenance_soft_server.modules.auth.services.AuthService;
 import com.tgd.maintenance_soft_server.modules.maintenance.dtos.MaintenanceRequestDto;
 import com.tgd.maintenance_soft_server.modules.maintenance.dtos.MaintenanceResponseDto;
+import com.tgd.maintenance_soft_server.modules.maintenance.dtos.MaintenanceUpdateRequestDto;
 import com.tgd.maintenance_soft_server.modules.maintenance.services.MaintenanceService;
 import com.tgd.maintenance_soft_server.modules.plant.entities.PlantEntity;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class MaintenanceController {
         PlantEntity plantEntity = authService.getSelectedPlant(plantId);
         return ResponseEntity.ok(maintenanceService.getAll(plantEntity));
     }
-    
+
     @GetMapping("/{id}")
     public ResponseEntity<MaintenanceResponseDto> getMaintenanceById(@RequestHeader("x-plant-id") Long plantId, @PathVariable Long id) {
         PlantEntity plantEntity = authService.getSelectedPlant(plantId);
@@ -36,6 +37,16 @@ public class MaintenanceController {
     public ResponseEntity<MaintenanceResponseDto> createMaintenance(@RequestHeader("x-plant-id") Long plantId, @RequestBody MaintenanceRequestDto maintenanceRequestDto) {
         PlantEntity plantEntity = authService.getSelectedPlant(plantId);
         return ResponseEntity.ok(maintenanceService.createMaintenance(plantEntity, maintenanceRequestDto));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MaintenanceResponseDto> updateMaintenance(
+            @RequestHeader("x-plant-id") Long plantId,
+            @PathVariable Long id,
+            @RequestBody MaintenanceUpdateRequestDto maintenanceRequestDto
+    ) {
+        PlantEntity plantEntity = authService.getSelectedPlant(plantId);
+        return ResponseEntity.ok(maintenanceService.updateMaintenance(id, plantEntity, maintenanceRequestDto));
     }
 
     @DeleteMapping("/{id}")
