@@ -12,23 +12,12 @@ import java.util.Map;
 
 @Repository
 public interface MaintenanceRepository extends BloRepository<MaintenanceEntity, Long, PlantEntity> {
-    List<MaintenanceEntity> findAllByRouteIdAndElementIdAndMaintenanceDateAndIdentifyingEntity(
-            Long routeId,
-            Long elementId,
-            LocalDate maintenanceDate,
-            PlantEntity plantEntity
-    );
-
-    List<MaintenanceEntity> findAllByRouteIdAndElementIdAndIdentifyingEntity(
-            Long routeId,
-            Long elementId,
-            PlantEntity plantEntity
-    );
-
     List<MaintenanceEntity> findAllByRouteIdAndElementIdAndMaintenanceDateGreaterThanEqualAndIdentifyingEntity(
             Long routeId,
             Long elementId,
             LocalDate maintenanceDate,
             PlantEntity identifyingEntity
     );
+
+    List<MaintenanceEntity> findByMaintenanceDateAndIdentifyingEntity(LocalDate maintenanceDate, PlantEntity identifyingEntity);
 }

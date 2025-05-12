@@ -15,7 +15,6 @@ import com.tgd.maintenance_soft_server.modules.maintenance.entities.MaintenanceE
 import com.tgd.maintenance_soft_server.modules.maintenance.repositories.MaintenanceRepository;
 import com.tgd.maintenance_soft_server.modules.maintenance.services.MaintenanceService;
 import com.tgd.maintenance_soft_server.modules.plant.entities.PlantEntity;
-import com.tgd.maintenance_soft_server.modules.route.dtos.RouteResponseDto;
 import com.tgd.maintenance_soft_server.modules.route.entities.RouteEntity;
 import com.tgd.maintenance_soft_server.modules.route.repositories.RouteRepository;
 import com.tgd.maintenance_soft_server.modules.route.services.RouteService;
