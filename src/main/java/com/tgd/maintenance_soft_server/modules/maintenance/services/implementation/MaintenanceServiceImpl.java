@@ -4,11 +4,14 @@ import com.tgd.maintenance_soft_server.lib.blo_service.services.BloService;
 import com.tgd.maintenance_soft_server.modules.element.dtos.ElementResponseDto;
 import com.tgd.maintenance_soft_server.modules.element.entities.ElementEntity;
 import com.tgd.maintenance_soft_server.modules.element.repositories.ElementRepository;
+import com.tgd.maintenance_soft_server.modules.email.dtos.EmailRequestDto;
+import com.tgd.maintenance_soft_server.modules.email.models.EmailType;
 import com.tgd.maintenance_soft_server.modules.form.dtos.FormResponseDto;
 import com.tgd.maintenance_soft_server.modules.form.entities.FormEntity;
 import com.tgd.maintenance_soft_server.modules.form.entities.FormFieldEntity;
 import com.tgd.maintenance_soft_server.modules.form.repositories.FormFieldRepository;
 import com.tgd.maintenance_soft_server.modules.form.repositories.FormRepository;
+import com.tgd.maintenance_soft_server.modules.email.services.EmailService;
 import com.tgd.maintenance_soft_server.modules.maintenance.dtos.*;
 import com.tgd.maintenance_soft_server.modules.maintenance.entities.MaintenanceAnswerEntity;
 import com.tgd.maintenance_soft_server.modules.maintenance.entities.MaintenanceEntity;
@@ -18,10 +21,16 @@ import com.tgd.maintenance_soft_server.modules.plant.entities.PlantEntity;
 import com.tgd.maintenance_soft_server.modules.route.entities.RouteEntity;
 import com.tgd.maintenance_soft_server.modules.route.repositories.RouteRepository;
 import com.tgd.maintenance_soft_server.modules.route.services.RouteService;
+import com.tgd.maintenance_soft_server.modules.user.entities.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +45,11 @@ public class MaintenanceServiceImpl
     private final FormRepository formRepository;
     private final FormFieldRepository formFieldRepository;
     private final RouteService routeService;
+
+    private final EmailService emailService;
+
+    @Value("${client.base-url}")
+    private String clientBaseUrl;
 
     @Override
     public MaintenanceRepository getRepository() {
@@ -54,7 +68,7 @@ public class MaintenanceServiceImpl
 
     @Override
     @Transactional
-    public MaintenanceResponseDto createMaintenance(PlantEntity plantEntity, MaintenanceRequestDto maintenanceRequestDto) {
+    public MaintenanceResponseDto createMaintenance(UserEntity userEntity, PlantEntity plantEntity, MaintenanceRequestDto maintenanceRequestDto) {
         RouteEntity routeEntity = routeRepository
                 .findByIdAndIdentifyingEntity(maintenanceRequestDto.getRouteId(), plantEntity)
                 .orElseThrow(() -> new RuntimeException("Route not found or not associated with plant"));
@@ -93,6 +107,22 @@ public class MaintenanceServiceImpl
 
         MaintenanceResponseDto responseDto = mapEntityToDto(savedMaintenance);
         responseDto.setForm(modelMapper.map(formEntity, FormResponseDto.class));
+
+        if (maintenanceRequestDto.getNotifySupervisor()) {
+            String plantSlug = plantEntity.getName().toLowerCase().replaceAll("\\s", "-");
+
+            EmailRequestDto emailRequestDto = new EmailRequestDto();
+            emailRequestDto.setTo(List.of("joacobenegas2@hotmail.com"));
+            emailRequestDto.setSubject("New maintenance request");
+            emailRequestDto.setEmailType(EmailType.NOTIFY_TO_SUPERVISOR);
+            emailRequestDto.setVariables(Map.of(
+                    "supervisorName", "Supervisor",
+                    "operatorName", userEntity.getName(),
+                    "dashboardUrl", clientBaseUrl + "/" + plantSlug + "/maintenance/" + savedMaintenance.getId()
+                    ));
+
+            emailService.sendTemplatedEmail(emailRequestDto);
+        }
 
         return responseDto;
     }

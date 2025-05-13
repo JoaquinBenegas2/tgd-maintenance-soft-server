@@ -6,8 +6,11 @@ import com.tgd.maintenance_soft_server.modules.maintenance.dtos.MaintenanceRespo
 import com.tgd.maintenance_soft_server.modules.maintenance.dtos.MaintenanceUpdateRequestDto;
 import com.tgd.maintenance_soft_server.modules.maintenance.services.MaintenanceService;
 import com.tgd.maintenance_soft_server.modules.plant.entities.PlantEntity;
+import com.tgd.maintenance_soft_server.modules.user.entities.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,9 +37,14 @@ public class MaintenanceController {
     }
 
     @PostMapping
-    public ResponseEntity<MaintenanceResponseDto> createMaintenance(@RequestHeader("x-plant-id") Long plantId, @RequestBody MaintenanceRequestDto maintenanceRequestDto) {
+    public ResponseEntity<MaintenanceResponseDto> createMaintenance(
+            @AuthenticationPrincipal Jwt jwt,
+            @RequestHeader("x-plant-id") Long plantId,
+            @RequestBody MaintenanceRequestDto maintenanceRequestDto
+    ) {
+        UserEntity userEntity = authService.getAuthenticatedUser(jwt);
         PlantEntity plantEntity = authService.getSelectedPlant(plantId);
-        return ResponseEntity.ok(maintenanceService.createMaintenance(plantEntity, maintenanceRequestDto));
+        return ResponseEntity.ok(maintenanceService.createMaintenance(userEntity, plantEntity, maintenanceRequestDto));
     }
 
     @PutMapping("/{id}")

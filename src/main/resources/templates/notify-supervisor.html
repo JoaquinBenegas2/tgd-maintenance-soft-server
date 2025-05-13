@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Mantenimiento Crítico</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f4f4;
+            padding: 24px;
+            margin: 0;
+        }
+
+        .email-container {
+            background-color: #ffffff;
+            border-radius: 0px 8px 8px 0px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 32px;
+            max-width: 600px;
+            margin: auto;
+            border-left: 6px solid #d32f2f;
+        }
+
+        .header {
+            color: #d32f2f;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .content {
+            color: #333333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .footer {
+            margin-top: 32px;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: #d32f2f;
+        }
+
+        .cta {
+            margin-top: 24px;
+        }
+
+        .cta a {
+            display: inline-block;
+            background-color: #d32f2f;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta a:hover {
+            background-color: #b71c1c;
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <div class="header">⚠️ Notificación de Mantenimiento Crítico</div>
+
+    <div class="content">
+        <p>Hola <strong th:text="${supervisorName}">Supervisor</strong>,</p>
+
+        <p>
+            Queremos informarte que el operario
+            <span class="highlight" th:text="${operatorName}">Operario</span>
+            ha marcado un <strong>mantenimiento como crítico</strong> dentro del sistema.
+        </p>
+
+        <p>
+            Esta acción requiere de tu revisión inmediata para evaluar la situación, tomar decisiones y garantizar la
+            continuidad operativa y la seguridad del equipo afectado.
+        </p>
+
+        <div class="cta">
+            <a th:href="${dashboardUrl}">Ir al detalle del mantenimiento</a>
+        </div>
+    </div>
+
+
+    <div class="footer">
+        Este es un mensaje automático generado por el sistema de gestión de mantenimiento.
+    </div>
+</div>
+</body>
+</html>

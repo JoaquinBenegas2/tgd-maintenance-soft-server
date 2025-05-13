@@ -34,4 +34,7 @@ public class MaintenanceRequestDto {
     private LocalDate maintenanceDate;
 
     private List<MaintenanceAnswerRequestDto> answers = new ArrayList<>();
+
+    @JsonProperty("notify_supervisor")
+    private Boolean notifySupervisor;
 }
