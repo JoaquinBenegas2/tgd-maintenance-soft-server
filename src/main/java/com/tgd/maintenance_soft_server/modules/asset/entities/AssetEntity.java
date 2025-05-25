@@ -1,6 +1,5 @@
 package com.tgd.maintenance_soft_server.modules.asset.entities;
 
-import com.tgd.maintenance_soft_server.interfaces.BaseEntity;
 import com.tgd.maintenance_soft_server.interfaces.BaseIdentifyingEntity;
 import com.tgd.maintenance_soft_server.modules.asset.models.AssetStatus;
 import com.tgd.maintenance_soft_server.modules.component.entities.ComponentEntity;

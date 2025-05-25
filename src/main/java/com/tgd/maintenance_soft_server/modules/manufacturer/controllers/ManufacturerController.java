@@ -1,5 +1,6 @@
 package com.tgd.maintenance_soft_server.modules.manufacturer.controllers;
 
+import com.tgd.maintenance_soft_server.dtos.active_status.ActiveStatusRequestDto;
 import com.tgd.maintenance_soft_server.modules.auth.services.AuthService;
 import com.tgd.maintenance_soft_server.modules.manufacturer.dtos.ManufacturerRequestDto;
 import com.tgd.maintenance_soft_server.modules.manufacturer.dtos.ManufacturerResponseDto;
@@ -21,11 +22,19 @@ public class ManufacturerController {
     private final ManufacturerService manufacturerService;
 
     @GetMapping
-    public ResponseEntity<List<ManufacturerResponseDto>> getManufacturerList(@RequestHeader("x-plant-id") Long plantId) {
+    public ResponseEntity<List<ManufacturerResponseDto>> getManufacturerList(
+            @RequestHeader("x-plant-id") Long plantId,
+            @RequestParam(value = "active", required = false) Boolean active
+    ) {
         PlantEntity plantEntity = authService.getSelectedPlant(plantId);
+
+        if (active != null) {
+            return ResponseEntity.ok(manufacturerService.getAllByActive(plantEntity, active));
+        }
+
         return ResponseEntity.ok(manufacturerService.getAll(plantEntity));
     }
-    
+
     @GetMapping("/{id}")
     public ResponseEntity<ManufacturerResponseDto> getManufacturerById(@RequestHeader("x-plant-id") Long plantId, @PathVariable Long id) {
         PlantEntity plantEntity = authService.getSelectedPlant(plantId);
@@ -42,6 +51,16 @@ public class ManufacturerController {
     public ResponseEntity<ManufacturerResponseDto> updateManufacturer(@RequestHeader("x-plant-id") Long plantId, @PathVariable Long id, @RequestBody ManufacturerRequestDto manufacturerRequestDto) {
         PlantEntity plantEntity = authService.getSelectedPlant(plantId);
         return ResponseEntity.ok(manufacturerService.update(id, plantEntity, manufacturerRequestDto));
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<ManufacturerResponseDto> updateManufacturerActive(
+            @RequestHeader("x-plant-id") Long plantId,
+            @PathVariable Long id,
+            @RequestBody ActiveStatusRequestDto statusRequestDto
+    ) {
+        PlantEntity plantEntity = authService.getSelectedPlant(plantId);
+        return ResponseEntity.ok(manufacturerService.updateManufacturerActive(id, plantEntity, statusRequestDto.getActive()));
     }
 
     @DeleteMapping("/{id}")
