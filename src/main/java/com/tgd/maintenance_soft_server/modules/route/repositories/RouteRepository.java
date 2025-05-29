@@ -12,4 +12,6 @@ import java.util.List;
 @Repository
 public interface RouteRepository extends BloRepository<RouteEntity, Long, PlantEntity> {
     List<RouteEntity> findAllByStatusIsAndIdentifyingEntity(RouteStatus status, PlantEntity plantEntity);
+
+    List<RouteEntity> findAllByIdentifyingEntityAndStatus(PlantEntity plant, RouteStatus status);
 }

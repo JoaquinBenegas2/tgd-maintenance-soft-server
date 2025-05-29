@@ -36,6 +36,9 @@ public class RouteEntity extends BaseIdentifyingEntity {
     @Column(name = "start_date")
     private LocalDate startDate;
 
+    @Column(name="active_from_date")
+    private LocalDate activeFromDate;
+
     @Enumerated(EnumType.STRING)
     private RouteStatus status;
 

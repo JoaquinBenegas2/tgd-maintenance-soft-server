@@ -7,6 +7,7 @@ import com.tgd.maintenance_soft_server.modules.route.dtos.ProgressRouteResponseD
 import com.tgd.maintenance_soft_server.modules.route.dtos.RouteRequestDto;
 import com.tgd.maintenance_soft_server.modules.route.dtos.RouteResponseDto;
 import com.tgd.maintenance_soft_server.modules.route.dtos.RouteUpdateRequestDto;
+import com.tgd.maintenance_soft_server.modules.route.models.RouteStatus;
 import com.tgd.maintenance_soft_server.modules.route.services.RouteService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +27,16 @@ public class RouteController {
     private final RouteService routeService;
 
     @GetMapping
-    public ResponseEntity<List<RouteResponseDto>> getRouteList(@RequestHeader("x-plant-id") Long plantId) {
+    public ResponseEntity<List<RouteResponseDto>> getRouteList(
+            @RequestHeader("x-plant-id") Long plantId,
+            @RequestParam(value = "status", required = false) RouteStatus status
+    ) {
         PlantEntity plantEntity = authService.getSelectedPlant(plantId);
+
+        if (status != null) {
+            return ResponseEntity.ok(routeService.getAllByStatus(plantEntity, status));
+        }
+
         return ResponseEntity.ok(routeService.getAllRoutes(plantEntity));
     }
 
@@ -120,5 +129,17 @@ public class RouteController {
     public void deleteRouteById(@RequestHeader("x-plant-id") Long plantId, @PathVariable Long id) {
         PlantEntity plantEntity = authService.getSelectedPlant(plantId);
         routeService.deleteById(id, plantEntity);
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<RouteResponseDto> updateRouteStatus(
+            @RequestHeader("x-plant-id") Long plantId,
+            @PathVariable Long id,
+            @RequestBody Map<String, String> request
+    ) {
+        PlantEntity plantEntity = authService.getSelectedPlant(plantId);
+        RouteStatus newStatus = RouteStatus.valueOf(request.get("status").toUpperCase());
+        RouteResponseDto updated = routeService.updateRouteStatus(id, newStatus, plantEntity);
+        return ResponseEntity.ok(updated);
     }
 }

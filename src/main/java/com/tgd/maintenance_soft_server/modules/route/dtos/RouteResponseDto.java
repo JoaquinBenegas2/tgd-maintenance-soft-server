@@ -30,6 +30,10 @@ public class RouteResponseDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 
+    @JsonProperty("active_from_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate activeFromDate;
+
     @JsonProperty("assigned_elements")
     private List<ElementResponseDto> assignedElements;
 

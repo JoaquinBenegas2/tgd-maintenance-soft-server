@@ -7,6 +7,7 @@ import com.tgd.maintenance_soft_server.modules.route.dtos.RouteRequestDto;
 import com.tgd.maintenance_soft_server.modules.route.dtos.RouteResponseDto;
 import com.tgd.maintenance_soft_server.modules.route.dtos.RouteUpdateRequestDto;
 import com.tgd.maintenance_soft_server.modules.route.entities.RouteEntity;
+import com.tgd.maintenance_soft_server.modules.route.models.RouteStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,4 +38,8 @@ public interface RouteService extends BloServiceInterface<RouteRequestDto, Route
     List<ProgressRouteResponseDto> getDelayedRoutes(PlantEntity plantEntity);
 
     RouteResponseDto mapToResponseDto(RouteEntity entity);
+
+    List<RouteResponseDto> getAllByStatus(PlantEntity plantEntity, RouteStatus status);
+
+    RouteResponseDto updateRouteStatus(Long id, RouteStatus status, PlantEntity plantEntity);
 }

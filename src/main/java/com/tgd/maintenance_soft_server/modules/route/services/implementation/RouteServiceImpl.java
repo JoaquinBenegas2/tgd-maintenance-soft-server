@@ -75,6 +75,7 @@ public class RouteServiceImpl
         route.setDescription(routeRequestDto.getDescription());
         route.setPeriodicityInDays(routeRequestDto.getPeriodicityInDays());
         route.setStartDate(routeRequestDto.getStartDate());
+        route.setActiveFromDate(routeRequestDto.getStartDate());
         route.setStatus(RouteStatus.ACTIVE);
         route.setIdentifyingEntity(plantEntity);
 
@@ -99,10 +100,19 @@ public class RouteServiceImpl
         RouteEntity route = routeRepository.findByIdAndIdentifyingEntity(id, plantEntity)
                 .orElseThrow(() -> new RuntimeException("Route not found or not associated with plant"));
 
+        if (!route.getStartDate().isEqual(dto.getStartDate())) {
+            boolean hasMaintenances = maintenanceRepository.existsByRoute(route);
+
+            if (hasMaintenances) {
+                throw new IllegalStateException("Cannot change start date because maintenances already exist for this route");
+            }
+
+            route.setStartDate(dto.getStartDate());
+        }
+
         route.setName(dto.getName());
         route.setDescription(dto.getDescription());
         route.setPeriodicityInDays(dto.getPeriodicityInDays());
-        route.setStartDate(dto.getStartDate());
 
         RouteEntity routeEntityUpdated = routeRepository.save(route);
         return mapToResponseDto(routeEntityUpdated);
@@ -222,6 +232,7 @@ public class RouteServiceImpl
         routeResponseDto.setStartDate(entity.getStartDate());
         routeResponseDto.setPeriodicityInDays(entity.getPeriodicityInDays());
         routeResponseDto.setStatus(entity.getStatus());
+        routeResponseDto.setActiveFromDate(entity.getActiveFromDate());
 
         routeResponseDto.setAssignedElements(entity.getAssignedElements().stream()
                 .map(e -> modelMapper.map(e, ElementResponseDto.class))
@@ -242,6 +253,7 @@ public class RouteServiceImpl
         routeResponseDto.setStartDate(route.getStartDate());
         routeResponseDto.setPeriodicityInDays(route.getPeriodicityInDays());
         routeResponseDto.setStatus(route.getStatus());
+        routeResponseDto.setActiveFromDate(route.getActiveFromDate());
 
         List<ProgressElementResponseDto> elementDtoList = route.getAssignedElements().stream()
                 .map(element -> {
@@ -266,5 +278,27 @@ public class RouteServiceImpl
 
     private long daysBetween(LocalDate from, LocalDate to) {
         return ChronoUnit.DAYS.between(from, to);
+    }
+
+    public List<RouteResponseDto> getAllByStatus(PlantEntity plantEntity, RouteStatus status) {
+        return routeRepository.findAllByIdentifyingEntityAndStatus(plantEntity, status).stream()
+                .map(this::mapToResponseDto)
+                .toList();
+    }
+
+    @Transactional
+    public RouteResponseDto updateRouteStatus(Long id, RouteStatus status, PlantEntity plantEntity) {
+        RouteEntity route = routeRepository.findByIdAndIdentifyingEntity(id, plantEntity)
+                .orElseThrow(() -> new EntityNotFoundException("Route not found"));
+
+        RouteStatus previousStatus = route.getStatus();
+
+        if (previousStatus == RouteStatus.INACTIVE && status == RouteStatus.ACTIVE) {
+            route.setActiveFromDate(LocalDate.now());
+        }
+
+        route.setStatus(status);
+
+        return mapToResponseDto(routeRepository.save(route));
     }
 }
