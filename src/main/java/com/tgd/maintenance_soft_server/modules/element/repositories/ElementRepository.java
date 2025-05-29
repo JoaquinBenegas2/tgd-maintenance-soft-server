@@ -3,6 +3,7 @@ package com.tgd.maintenance_soft_server.modules.element.repositories;
 import com.tgd.maintenance_soft_server.lib.blo_service.repositories.BloRepository;
 import com.tgd.maintenance_soft_server.modules.component.entities.ComponentEntity;
 import com.tgd.maintenance_soft_server.modules.element.entities.ElementEntity;
+import com.tgd.maintenance_soft_server.modules.element.models.ElementStatus;
 import com.tgd.maintenance_soft_server.modules.plant.entities.PlantEntity;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -21,4 +22,6 @@ public interface ElementRepository extends BloRepository<ElementEntity, Long, Pl
     Optional<ElementEntity> findByComponent_Asset_IdAndComponent_IdAndIdAndIdentifyingEntity(
             Long assetId, Long componentId, Long elementId, PlantEntity plant
     );
+
+    List<ElementEntity> findAllByIdentifyingEntityAndStatus(PlantEntity plant, ElementStatus status);
 }

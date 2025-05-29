@@ -2,6 +2,7 @@ package com.tgd.maintenance_soft_server.modules.asset.controllers;
 
 import com.tgd.maintenance_soft_server.modules.asset.dtos.AssetRequestDto;
 import com.tgd.maintenance_soft_server.modules.asset.dtos.AssetResponseDto;
+import com.tgd.maintenance_soft_server.modules.asset.models.AssetStatus;
 import com.tgd.maintenance_soft_server.modules.asset.services.AssetService;
 import com.tgd.maintenance_soft_server.modules.auth.services.AuthService;
 import com.tgd.maintenance_soft_server.modules.plant.entities.PlantEntity;
@@ -28,7 +29,7 @@ public class AssetController {
             @RequestHeader("x-plant-id") Long plantId,
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer size,
-            @RequestParam(required = false, defaultValue = "id" ) String sort,
+            @RequestParam(required = false, defaultValue = "id") String sort,
             @RequestParam(required = false, defaultValue = "DESC") String direction,
             @RequestParam(required = false) Map<String, Object> filters,
             @RequestParam(required = false) String search
@@ -69,6 +70,15 @@ public class AssetController {
     public ResponseEntity<AssetResponseDto> updateAsset(@RequestHeader("x-plant-id") Long plantId, @PathVariable Long id, @RequestBody AssetRequestDto assetRequestDto) {
         PlantEntity plantEntity = authService.getSelectedPlant(plantId);
         return ResponseEntity.ok(assetService.updateAsset(id, plantEntity, assetRequestDto));
+    }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<AssetResponseDto> updateAssetStatus(
+            @RequestHeader("x-plant-id") Long plantId,
+            @PathVariable Long id,
+            @RequestParam AssetStatus status) {
+        PlantEntity plantEntity = authService.getSelectedPlant(plantId);
+        return ResponseEntity.ok(assetService.updateAssetStatus(id, status, plantEntity));
     }
 
     @DeleteMapping("/{id}")

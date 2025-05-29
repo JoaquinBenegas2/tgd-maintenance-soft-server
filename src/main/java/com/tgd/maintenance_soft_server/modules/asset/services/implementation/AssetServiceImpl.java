@@ -6,6 +6,10 @@ import com.tgd.maintenance_soft_server.modules.asset.entities.AssetEntity;
 import com.tgd.maintenance_soft_server.modules.asset.models.AssetStatus;
 import com.tgd.maintenance_soft_server.modules.asset.repositories.AssetRepository;
 import com.tgd.maintenance_soft_server.modules.asset.services.AssetService;
+import com.tgd.maintenance_soft_server.modules.component.entities.ComponentEntity;
+import com.tgd.maintenance_soft_server.modules.component.models.ComponentStatus;
+import com.tgd.maintenance_soft_server.modules.element.entities.ElementEntity;
+import com.tgd.maintenance_soft_server.modules.element.models.ElementStatus;
 import com.tgd.maintenance_soft_server.modules.manufacturer.entities.ManufacturerEntity;
 import com.tgd.maintenance_soft_server.modules.manufacturer.repositories.ManufacturerRepository;
 import com.tgd.maintenance_soft_server.modules.plant.entities.PlantEntity;
@@ -140,4 +144,24 @@ public class AssetServiceImpl implements AssetService {
 
         assetRepository.delete(existingAsset);
     }
+
+    @Override
+    @Transactional
+    public AssetResponseDto updateAssetStatus(Long id, AssetStatus newStatus, PlantEntity plant) {
+        AssetEntity asset = assetRepository.findByIdAndIdentifyingEntity(id, plant)
+                .orElseThrow(() -> new EntityNotFoundException("Asset not found"));
+
+        asset.setStatus(newStatus);
+
+        for (ComponentEntity component : asset.getComponents()) {
+            component.setStatus(ComponentStatus.valueOf(newStatus.name()));
+            for (ElementEntity element : component.getElements()) {
+                element.setStatus(ElementStatus.valueOf(newStatus.name()));
+            }
+        }
+
+        assetRepository.save(asset);
+        return modelMapper.map(asset, AssetResponseDto.class);
+    }
+
 }

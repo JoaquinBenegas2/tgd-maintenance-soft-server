@@ -2,6 +2,7 @@ package com.tgd.maintenance_soft_server.modules.asset.services;
 
 import com.tgd.maintenance_soft_server.modules.asset.dtos.AssetRequestDto;
 import com.tgd.maintenance_soft_server.modules.asset.dtos.AssetResponseDto;
+import com.tgd.maintenance_soft_server.modules.asset.models.AssetStatus;
 import com.tgd.maintenance_soft_server.modules.plant.entities.PlantEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,4 +36,6 @@ public interface AssetService {
     AssetResponseDto updateAsset(Long id, PlantEntity plantEntity, AssetRequestDto assetRequestDto);
 
     void deleteAssetById(Long id, PlantEntity plantEntity);
+
+    AssetResponseDto updateAssetStatus(Long id, AssetStatus newStatus, PlantEntity plant);
 }
