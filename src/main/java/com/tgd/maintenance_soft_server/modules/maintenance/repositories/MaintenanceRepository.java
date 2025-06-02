@@ -23,4 +23,25 @@ public interface MaintenanceRepository extends BloRepository<MaintenanceEntity, 
     List<MaintenanceEntity> findByMaintenanceDateAndIdentifyingEntity(LocalDate maintenanceDate, PlantEntity identifyingEntity);
 
     boolean existsByRoute(RouteEntity route);
+
+    List<MaintenanceEntity> findAllByIdentifyingEntityAndElement_IdAndMaintenanceDateBetween(
+            PlantEntity plant,
+            Long elementId,
+            LocalDate dateFrom,
+            LocalDate dateTo
+    );
+
+    List<MaintenanceEntity> findAllByIdentifyingEntityAndElement_Component_IdAndMaintenanceDateBetween(
+            PlantEntity plant,
+            Long componentId,
+            LocalDate dateFrom,
+            LocalDate dateTo
+    );
+
+    List<MaintenanceEntity> findAllByIdentifyingEntityAndElement_Component_Asset_IdAndMaintenanceDateBetween(
+            PlantEntity plant,
+            Long assetId,
+            LocalDate dateFrom,
+            LocalDate dateTo
+    );
 }

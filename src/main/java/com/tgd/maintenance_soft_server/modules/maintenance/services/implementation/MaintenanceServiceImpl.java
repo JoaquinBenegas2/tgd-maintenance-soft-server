@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,7 +120,7 @@ public class MaintenanceServiceImpl
                     "supervisorName", "Supervisor",
                     "operatorName", userEntity.getName(),
                     "dashboardUrl", clientBaseUrl + "/" + plantSlug + "/maintenance/" + savedMaintenance.getId()
-                    ));
+            ));
 
             emailService.sendTemplatedEmail(emailRequestDto);
         }
@@ -163,6 +164,36 @@ public class MaintenanceServiceImpl
         return responseDto;
     }
 
+    @Override
+    public List<MaintenanceResponseDto> getAllByElementAndDateRange(PlantEntity plant, Long elementId, LocalDate dateFrom, LocalDate dateTo) {
+        return maintenanceRepository
+                .findAllByIdentifyingEntityAndElement_IdAndMaintenanceDateBetween(
+                        plant, elementId, dateFrom, dateTo
+                ).stream()
+                .map(this::mapEntityToDto)
+                .toList();
+    }
+
+    @Override
+    public List<MaintenanceResponseDto> getAllByComponentAndDateRange(PlantEntity plant, Long componentId, LocalDate dateFrom, LocalDate dateTo) {
+        return maintenanceRepository
+                .findAllByIdentifyingEntityAndElement_Component_IdAndMaintenanceDateBetween(
+                        plant, componentId, dateFrom, dateTo
+                ).stream()
+                .map(this::mapEntityToDto)
+                .toList();
+    }
+
+    @Override
+    public List<MaintenanceResponseDto> getAllByAssetAndDateRange(PlantEntity plant, Long assetId, LocalDate dateFrom, LocalDate dateTo) {
+        return maintenanceRepository
+                .findAllByIdentifyingEntityAndElement_Component_Asset_IdAndMaintenanceDateBetween(
+                        plant, assetId, dateFrom, dateTo
+                ).stream()
+                .map(this::mapEntityToDto)
+                .toList();
+    }
+
     private MaintenanceResponseDto mapEntityToDto(MaintenanceEntity maintenanceEntity) {
         MaintenanceResponseDto maintenanceResponseDto = new MaintenanceResponseDto();
         maintenanceResponseDto.setId(maintenanceEntity.getId());
@@ -172,6 +203,7 @@ public class MaintenanceServiceImpl
         maintenanceResponseDto.setAnswers(maintenanceEntity.getAnswers().stream()
                 .map(answer -> modelMapper.map(answer, MaintenanceAnswerResponseDto.class))
                 .toList());
+        maintenanceResponseDto.setForm(modelMapper.map(maintenanceEntity.getAnswers().get(0).getForm(), FormResponseDto.class));
         return maintenanceResponseDto;
     }
 }
