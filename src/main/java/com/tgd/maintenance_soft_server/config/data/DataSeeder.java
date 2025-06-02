@@ -53,7 +53,6 @@ public class DataSeeder implements CommandLineRunner {
     private void seedCompany() {
         if (companyRepository.count() == 0) {
             company = new CompanyEntity();
-            company.setId(100L);
             company.setName("TechGlobal Solutions");
             companyRepository.save(company);
             System.out.println("🏢 Empresa cargada");
@@ -63,7 +62,6 @@ public class DataSeeder implements CommandLineRunner {
     private void seedUsers() {
         if (userRepository.count() == 0) {
             UserEntity manager = new UserEntity();
-            manager.setId(100L);
             manager.setAuth0Id("auth0|67f70aa795b0469a2658e7e0");
             manager.setEmail("plant-manager@mail.com");
             manager.setName("Plant Manager");
@@ -74,7 +72,6 @@ public class DataSeeder implements CommandLineRunner {
             manager.setUpdatedAt(LocalDateTime.now());
 
             UserEntity supervisor = new UserEntity();
-            supervisor.setId(101L);
             supervisor.setAuth0Id("auth0|67fdd4ededfc67117cfdd43b");
             supervisor.setEmail("plant-supervisor@mail.com");
             supervisor.setName("Plant Supervisor");
@@ -85,7 +82,6 @@ public class DataSeeder implements CommandLineRunner {
             supervisor.setUpdatedAt(LocalDateTime.now());
 
             UserEntity operator = new UserEntity();
-            operator.setId(102L);
             operator.setAuth0Id("auth0|67fdd5a0c9b41c726c98cd6d");
             operator.setEmail("plant-operator@mail.com");
             operator.setName("Plant Operator");
@@ -104,7 +100,6 @@ public class DataSeeder implements CommandLineRunner {
     private void seedPlants() {
         if (plantRepository.count() == 0) {
             PlantEntity plant1 = new PlantEntity();
-            plant1.setId(100L);
             plant1.setName("Planta Buenos Aires");
             plant1.setLocation("Av. Libertador 1280, CABA");
             plant1.setCompany(company);
@@ -112,7 +107,6 @@ public class DataSeeder implements CommandLineRunner {
             plant1.setUpdatedAt(LocalDateTime.now());
 
             PlantEntity plant2 = new PlantEntity();
-            plant2.setId(101L);
             plant2.setName("Planta Córdoba");
             plant2.setLocation("Av. Colón 5678, Córdoba");
             plant2.setCompany(company);
@@ -120,7 +114,6 @@ public class DataSeeder implements CommandLineRunner {
             plant2.setUpdatedAt(LocalDateTime.now());
 
             PlantEntity plant3 = new PlantEntity();
-            plant3.setId(102L);
             plant3.setName("Planta Rosario");
             plant3.setLocation("Bv. Oroño 910, Rosario");
             plant3.setCompany(company);
