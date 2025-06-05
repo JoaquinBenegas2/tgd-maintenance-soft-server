@@ -118,6 +118,7 @@ public class RouteServiceImpl
         return mapToResponseDto(routeEntityUpdated);
     }
 
+    @Transactional
     @Override
     public RouteResponseDto assignUserToRoute(Long routeId, Long userId) {
         RouteEntity route = routeRepository.findById(routeId)
@@ -131,6 +132,7 @@ public class RouteServiceImpl
         return mapToResponseDto(routeRepository.save(route));
     }
 
+    @Transactional
     @Override
     public RouteResponseDto unassignUserFromRoute(Long routeId, Long userId) {
         RouteEntity route = routeRepository.findById(routeId)
@@ -144,6 +146,7 @@ public class RouteServiceImpl
         return mapToResponseDto(routeRepository.save(route));
     }
 
+    @Transactional
     @Override
     public RouteResponseDto assignElementToRoute(Long routeId, Long elementId) {
         RouteEntity route = routeRepository.findById(routeId)
@@ -157,6 +160,7 @@ public class RouteServiceImpl
         return mapToResponseDto(routeRepository.save(route));
     }
 
+    @Transactional
     @Override
     public RouteResponseDto unassignElementFromRoute(Long routeId, Long elementId) {
         RouteEntity route = routeRepository.findById(routeId)
@@ -205,6 +209,7 @@ public class RouteServiceImpl
         List<RouteEntity> routes = routeRepository.findAllByStatusIsAndIdentifyingEntity(RouteStatus.ACTIVE, plantEntity);
 
         return routes.stream()
+                .filter(route -> route.getPeriodicityInDays() != 1)
                 .map(route -> {
                     long diff = daysBetween(route.getStartDate(), today);
                     if (diff < 0) return null;

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Rutas Atrasadas</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f4f4;
+            padding: 24px;
+            margin: 0;
+        }
+
+        .email-container {
+            background-color: #ffffff;
+            border-radius: 0px 8px 8px 0px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 32px;
+            max-width: 600px;
+            margin: auto;
+            border-left: 6px solid #FFA000; /* Naranja/ámbar */
+        }
+
+        .header {
+            color: #FFA000;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .content {
+            color: #333333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .content p {
+            margin: 0 0 16px 0;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: #FFA000;
+        }
+
+        .route-list {
+            margin: 16px 0;
+            padding: 0;
+            list-style: none;
+        }
+        .route-list li {
+            background-color: #FFF8E1; /* Fondo suave amarillo */
+            border: 1px solid #FFD54F; /* Borde amarillo */
+            border-radius: 4px;
+            padding: 12px;
+            margin-bottom: 8px;
+        }
+
+        .footer {
+            margin-top: 32px;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .cta {
+            margin-top: 24px;
+        }
+
+        .cta a {
+            display: inline-block;
+            background-color: #FFA000;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta a:hover {
+            background-color: #FF8F00;
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <div class="header">⚠️ Notificación de Rutas Atrasadas</div>
+
+    <div class="content">
+        <p>Hola <strong th:text="${supervisorName}">Supervisor</strong>,</p>
+
+        <p>Te informamos que las siguientes rutas de mantenimiento en la planta
+            <span class="highlight" th:text="${plantName}">Nombre de Planta</span>
+            están atrasadas:</p>
+
+        <ul class="route-list">
+            <!-- Recorremos cada ruta atrasada -->
+            <li th:each="route : ${delayedRoutes}">
+                <p style="margin: 0"><strong th:text="${route.name}">Nombre de Ruta</strong></p>
+                <p style="margin: 0">Fecha esperada de último mantenimiento:
+                    <span class="highlight" th:text="${route.lastExpectedDate}">2025-06-04</span>
+                </p>
+            </li>
+        </ul>
+
+        <p>Por favor, revisá las rutas indicadas y coordiná las acciones correspondientes para normalizar el mantenimiento.</p>
+
+        <div class="cta">
+            <a th:href="${dashboardUrl}">Ver Detalles en el Panel</a>
+        </div>
+    </div>
+
+    <div class="footer">
+        Este es un mensaje automático generado por el sistema de gestión de mantenimiento.
+    </div>
+</div>
+</body>
+</html>

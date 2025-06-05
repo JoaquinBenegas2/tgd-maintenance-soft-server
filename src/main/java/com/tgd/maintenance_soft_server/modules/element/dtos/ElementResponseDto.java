@@ -1,5 +1,6 @@
 package com.tgd.maintenance_soft_server.modules.element.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tgd.maintenance_soft_server.modules.component.dtos.ComponentResponseDto;
 import com.tgd.maintenance_soft_server.modules.element.models.ElementStatus;
@@ -26,9 +27,11 @@ public class ElementResponseDto {
     private ManufacturerResponseDto manufacturer;
 
     @JsonProperty("last_maintenance_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate lastMaintenanceDate;
 
     @JsonProperty("last_replacement_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate lastReplacementDate;
 
     private ElementStatus status;

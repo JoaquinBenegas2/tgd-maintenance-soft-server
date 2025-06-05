@@ -106,6 +106,9 @@ public class MaintenanceServiceImpl
 
         MaintenanceEntity savedMaintenance = maintenanceRepository.save(maintenanceEntity);
 
+        elementEntity.setLastMaintenanceDate(savedMaintenance.getMaintenanceDate());
+        elementRepository.save(elementEntity);
+
         MaintenanceResponseDto responseDto = mapEntityToDto(savedMaintenance);
         responseDto.setForm(modelMapper.map(formEntity, FormResponseDto.class));
 
@@ -114,8 +117,8 @@ public class MaintenanceServiceImpl
 
             EmailRequestDto emailRequestDto = new EmailRequestDto();
             emailRequestDto.setTo(List.of("joacobenegas2@hotmail.com"));
-            emailRequestDto.setSubject("New maintenance request");
-            emailRequestDto.setEmailType(EmailType.NOTIFY_TO_SUPERVISOR);
+            emailRequestDto.setSubject("⚠️ Critical maintenance");
+            emailRequestDto.setEmailType(EmailType.CRITICAL_MAINTENANCE);
             emailRequestDto.setVariables(Map.of(
                     "supervisorName", "Supervisor",
                     "operatorName", userEntity.getName(),

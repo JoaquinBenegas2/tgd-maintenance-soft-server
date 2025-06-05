@@ -4,7 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum EmailType {
-    NOTIFY_TO_SUPERVISOR("notify-supervisor");
+    CRITICAL_MAINTENANCE("critical-maintenance"),
+    DELAYED_ROUTES("delayed-routes");
 
     private final String templateName;
 

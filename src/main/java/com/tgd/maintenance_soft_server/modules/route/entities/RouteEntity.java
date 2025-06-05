@@ -1,6 +1,5 @@
 package com.tgd.maintenance_soft_server.modules.route.entities;
 
-import com.tgd.maintenance_soft_server.interfaces.BaseEntity;
 import com.tgd.maintenance_soft_server.interfaces.BaseIdentifyingEntity;
 import com.tgd.maintenance_soft_server.modules.element.entities.ElementEntity;
 import com.tgd.maintenance_soft_server.modules.route.models.RouteStatus;
@@ -57,6 +56,9 @@ public class RouteEntity extends BaseIdentifyingEntity {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private List<UserEntity> assignedOperators = new ArrayList<>();
+
+    @OneToOne(mappedBy = "route", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private RouteNotificationStatusEntity notificationStatus;
 
     public void assignUser(UserEntity user) {
         if (!assignedOperators.contains(user)) {
