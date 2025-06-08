@@ -91,13 +91,6 @@ public class DelayedRouteNotifierScheduler {
 
         String plantName = plant.getName();
 
-        List<String> plantManagerEmails = plant.getAssignedUsers()
-                .stream()
-                .filter(user -> "PLANT_MANAGER".equals(user.getRole()))
-                .map(UserEntity::getEmail)
-                .distinct()
-                .toList();
-
         List<String> plantSupervisorEmails = plant.getAssignedUsers()
                 .stream()
                 .filter(user -> "PLANT_SUPERVISOR".equals(user.getRole()))
@@ -112,7 +105,6 @@ public class DelayedRouteNotifierScheduler {
                 .toList();
 
         List<String> allRecipients = Stream.of(
-                        plantManagerEmails.stream(),
                         plantSupervisorEmails.stream(),
                         plantOperatorEmails.stream()
                 )
@@ -127,7 +119,7 @@ public class DelayedRouteNotifierScheduler {
         String plantSlug = plant.getName().toLowerCase().replaceAll("\\s", "-");
 
         EmailRequestDto emailRequestDto = new EmailRequestDto();
-        emailRequestDto.setTo(List.of("joacobenegas2@hotmail.com"));
+        emailRequestDto.setTo(allRecipients);
         emailRequestDto.setSubject(subject);
         emailRequestDto.setEmailType(EmailType.DELAYED_ROUTES);
         emailRequestDto.setVariables(Map.of(

@@ -115,8 +115,16 @@ public class MaintenanceServiceImpl
         if (maintenanceRequestDto.getNotifySupervisor()) {
             String plantSlug = plantEntity.getName().toLowerCase().replaceAll("\\s", "-");
 
+            List<String> plantSupervisorEmails = plantEntity.getAssignedUsers()
+                    .stream()
+                    .filter(user -> "PLANT_SUPERVISOR".equals(user.getRole()))
+                    .map(UserEntity::getEmail)
+                    .distinct()
+                    .toList();
+
+
             EmailRequestDto emailRequestDto = new EmailRequestDto();
-            emailRequestDto.setTo(List.of("joacobenegas2@hotmail.com"));
+            emailRequestDto.setTo(plantSupervisorEmails);
             emailRequestDto.setSubject("⚠️ Critical maintenance");
             emailRequestDto.setEmailType(EmailType.CRITICAL_MAINTENANCE);
             emailRequestDto.setVariables(Map.of(
