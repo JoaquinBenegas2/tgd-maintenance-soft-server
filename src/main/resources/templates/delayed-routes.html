@@ -95,7 +95,6 @@
             están atrasadas:</p>
 
         <ul class="route-list">
-            <!-- Recorremos cada ruta atrasada -->
             <li th:each="route : ${delayedRoutes}">
                 <p style="margin: 0"><strong th:text="${route.name}">Nombre de Ruta</strong></p>
                 <p style="margin: 0">Fecha esperada de último mantenimiento:

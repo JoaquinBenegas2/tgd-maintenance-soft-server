@@ -1,5 +1,6 @@
 package com.tgd.maintenance_soft_server.modules.email.services.implementation;
 
+import com.tgd.maintenance_soft_server.modules.email.dtos.AttachmentDto;
 import com.tgd.maintenance_soft_server.modules.email.dtos.EmailRequestDto;
 import com.tgd.maintenance_soft_server.modules.email.services.EmailService;
 import com.tgd.maintenance_soft_server.modules.email.services.EmailTemplateProcessor;
@@ -34,7 +35,12 @@ public class EmailServiceImpl implements EmailService {
     public void sendTemplatedEmail(EmailRequestDto dto) {
         String templateName = dto.getEmailType().getTemplateName();
         String processedBody = templateProcessor.processTemplate(templateName, dto.getVariables());
-        sendEmail(dto.getTo(), dto.getSubject(), processedBody);
+
+        if (dto.getAttachments() != null && !dto.getAttachments().isEmpty()) {
+            sendEmailWithAttachments(dto.getTo(), dto.getSubject(), processedBody, dto.getAttachments());
+        } else {
+            sendEmail(dto.getTo(), dto.getSubject(), processedBody);
+        }
     }
 
     /**
@@ -57,6 +63,44 @@ public class EmailServiceImpl implements EmailService {
         helper.setSubject(subject);
         helper.setText(body, true);
         helper.setFrom(from);
+
+        mailSender.send(message);
+    }
+
+    /**
+     * Sends an email with attachments using the JavaMailSender.
+     *
+     * @param to          recipient's email address
+     * @param subject     subject of the email
+     * @param body        body of the email
+     * @param attachments list of attachments
+     */
+    @SneakyThrows
+    private void sendEmailWithAttachments(
+            List<String> to,
+            String subject,
+            String body,
+            List<AttachmentDto> attachments
+    ) {
+        if (!isValidHtml(body)) {
+            throw new MessagingException("Invalid HTML body");
+        }
+
+        MimeMessage message = mailSender.createMimeMessage();
+
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+        helper.setTo(to.toArray(new String[0]));
+        helper.setSubject(subject);
+        helper.setText(body, true);
+        helper.setFrom(from);
+
+        for (AttachmentDto att : attachments) {
+            helper.addAttachment(
+                    att.getFileName(),
+                    new org.springframework.core.io.ByteArrayResource(att.getContent()),
+                    att.getContentType()
+            );
+        }
 
         mailSender.send(message);
     }

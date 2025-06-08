@@ -23,4 +23,6 @@ public class EmailRequestDto {
     private EmailType emailType;
 
     private Map<String, Object> variables;
+
+    private List<AttachmentDto> attachments;
 }

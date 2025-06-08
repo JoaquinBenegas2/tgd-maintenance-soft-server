@@ -5,7 +5,8 @@ import lombok.Getter;
 @Getter
 public enum EmailType {
     CRITICAL_MAINTENANCE("critical-maintenance"),
-    DELAYED_ROUTES("delayed-routes");
+    DELAYED_ROUTES("delayed-routes"),
+    REPORT_A_PROBLEM("report-a-problem");
 
     private final String templateName;
 
