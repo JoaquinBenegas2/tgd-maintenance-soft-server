@@ -1,10 +1,10 @@
 package com.tgd.maintenance_soft_server.modules.element.controllers;
 
 import com.tgd.maintenance_soft_server.modules.auth.services.AuthService;
+import com.tgd.maintenance_soft_server.modules.element.dtos.ElementResponseDto;
 import com.tgd.maintenance_soft_server.modules.element.models.ElementStatus;
 import com.tgd.maintenance_soft_server.modules.element.services.ElementService;
 import com.tgd.maintenance_soft_server.modules.plant.entities.PlantEntity;
-import com.tgd.maintenance_soft_server.modules.element.dtos.ElementResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +32,12 @@ public class ElementController {
         }
 
         return ResponseEntity.ok(elementService.getAll(plantEntity));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ElementResponseDto> getElementById(@RequestHeader("x-plant-id") Long plantId, @PathVariable Long id) {
+        PlantEntity plantEntity = authService.getSelectedPlant(plantId);
+        return ResponseEntity.ok(elementService.getById(id, plantEntity));
     }
 
     @DeleteMapping("/{id}")

@@ -4,6 +4,7 @@ import com.tgd.maintenance_soft_server.lib.blo_service.services.BloService;
 import com.tgd.maintenance_soft_server.modules.element.dtos.ElementResponseDto;
 import com.tgd.maintenance_soft_server.modules.element.dtos.ProgressElementResponseDto;
 import com.tgd.maintenance_soft_server.modules.element.entities.ElementEntity;
+import com.tgd.maintenance_soft_server.modules.element.models.ElementStatus;
 import com.tgd.maintenance_soft_server.modules.element.repositories.ElementRepository;
 import com.tgd.maintenance_soft_server.modules.maintenance.repositories.MaintenanceRepository;
 import com.tgd.maintenance_soft_server.modules.plant.dtos.PlantResponseDto;
@@ -261,6 +262,7 @@ public class RouteServiceImpl
         routeResponseDto.setActiveFromDate(route.getActiveFromDate());
 
         List<ProgressElementResponseDto> elementDtoList = route.getAssignedElements().stream()
+                .filter(e -> e.getStatus() == ElementStatus.ACTIVE)
                 .map(element -> {
                     ProgressElementResponseDto elementDto = modelMapper.map(element, ProgressElementResponseDto.class);
                     boolean received = !maintenanceRepository
