@@ -31,6 +31,6 @@ public class FormEntity extends BaseIdentifyingEntity {
     @JoinColumn(name = "maintenance_type_id")
     private MaintenanceTypeEntity maintenanceType;
 
-    @OneToMany(mappedBy = "form")
+    @OneToMany(mappedBy = "form", fetch = FetchType.EAGER)
     private List<FormFieldEntity> fields = new ArrayList<>();
 }

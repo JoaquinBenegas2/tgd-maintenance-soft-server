@@ -43,8 +43,7 @@ public class MaintenanceEntity extends BaseIdentifyingEntity {
     @OneToMany(
             mappedBy = "maintenance",
             cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
+            orphanRemoval = true
     )
     private List<MaintenanceAnswerEntity> answers = new ArrayList<>();
 }

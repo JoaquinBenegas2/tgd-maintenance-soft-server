@@ -22,7 +22,8 @@ public class AiGenerationServiceImpl implements AiGenerationService {
     public Flux<String> getDailySummary(PlantEntity plantEntity) {
         String prompt = promptBuilderService.buildDailySummary(plantEntity);
         LocalDate today = LocalDate.now();
-        if (prompt == null) return Flux.just("No ", "se ", "registraron ", "mantenimientos ", "para ", "la ", "fecha ", today + ".");
+        if (prompt == null) return Flux.just("No ", "maintenances ", "were ", "registered ", "for ", "the ", "date ", today + ".");
+
 
         return aiGenerationClient.streamChatCompletion(prompt);
     }
@@ -30,9 +31,8 @@ public class AiGenerationServiceImpl implements AiGenerationService {
     @Override
     public Flux<String> getImprovementSuggestions(String dailySummary) {
         String prompt = promptBuilderService.buildImprovementSuggestions(dailySummary);
-        if (dailySummary == null || dailySummary.isEmpty()) return Flux.just("No ", "se ", "encontraron ", "sugerencias ", "de ", "mejora.");
+        if (dailySummary == null || dailySummary.isEmpty() || dailySummary.contains("No maintenances were registered")) return Flux.just("No ", "improvement ", "suggestions ", "were ", "found.");
 
         return aiGenerationClient.streamChatCompletion(prompt);
-        // return Flux.just("Esta " + "funcionalidad " + "está " + "en " + "desarrollo.");
     }
 }

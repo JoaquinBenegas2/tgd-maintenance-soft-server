@@ -30,7 +30,7 @@ public class AssetController {
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer size,
             @RequestParam(required = false, defaultValue = "id") String sort,
-            @RequestParam(required = false, defaultValue = "DESC") String direction,
+            @RequestParam(required = false, defaultValue = "ASC") String direction,
             @RequestParam(required = false) Map<String, Object> filters,
             @RequestParam(required = false) String search
     ) {
