@@ -36,10 +36,10 @@ public class SupportServiceImpl implements SupportService {
     ) throws IOException {
         EmailRequestDto emailRequest = new EmailRequestDto();
         emailRequest.setTo(List.of(developmentEmails.split(",")));
-        emailRequest.setSubject("🛠️ Reporte de problema: " + reportAProblemDto.getTitle());
+        emailRequest.setSubject("🛠️ Report a problem: " + reportAProblemDto.getTitle());
         emailRequest.setEmailType(EmailType.REPORT_A_PROBLEM);
         emailRequest.setVariables(Map.of(
-                "supervisorName", "Supervisor",
+                "supervisorName", "Support Team",
                 "title", reportAProblemDto.getTitle(),
                 "description", reportAProblemDto.getDescription(),
                 "plantName", plantEntity.getName()

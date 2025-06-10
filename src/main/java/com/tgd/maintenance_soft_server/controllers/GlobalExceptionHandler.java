@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ApiError> handleDataIntegrity(DataIntegrityViolationException ex) {
-        String userMessage = "No se puede eliminar porque existen registros relacionados.";
+        String userMessage = "Cannot be deleted because related records exist.";
         return buildErrorResponse(userMessage, HttpStatus.CONFLICT);
     }
 
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiError> handleError(MethodArgumentNotValidException exception) {
-        return buildErrorResponse("Error de validación", HttpStatus.BAD_REQUEST);
+        return buildErrorResponse("Validation error", HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ResponseStatusException.class)
