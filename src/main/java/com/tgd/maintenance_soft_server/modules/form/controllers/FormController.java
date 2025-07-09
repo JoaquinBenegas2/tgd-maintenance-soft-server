@@ -6,6 +6,7 @@ import com.tgd.maintenance_soft_server.modules.form.dtos.FormRequestDto;
 import com.tgd.maintenance_soft_server.modules.form.dtos.FormResponseDto;
 import com.tgd.maintenance_soft_server.modules.form.services.FormService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class FormController {
         PlantEntity plantEntity = authService.getSelectedPlant(plantId);
         return ResponseEntity.ok(formService.getAll(plantEntity));
     }
-    
+
     @GetMapping("/{id}")
     public ResponseEntity<FormResponseDto> getFormById(@RequestHeader("x-plant-id") Long plantId, @PathVariable Long id) {
         PlantEntity plantEntity = authService.getSelectedPlant(plantId);
@@ -35,7 +36,8 @@ public class FormController {
     @PostMapping
     public ResponseEntity<FormResponseDto> createForm(@RequestHeader("x-plant-id") Long plantId, @RequestBody FormRequestDto formRequestDto) {
         PlantEntity plantEntity = authService.getSelectedPlant(plantId);
-        return ResponseEntity.ok(formService.create(plantEntity, formRequestDto));
+        FormResponseDto created = formService.create(plantEntity, formRequestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @PutMapping("/{id}")

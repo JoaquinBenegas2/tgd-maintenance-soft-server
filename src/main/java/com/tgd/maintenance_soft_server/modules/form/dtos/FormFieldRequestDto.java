@@ -1,5 +1,6 @@
 package com.tgd.maintenance_soft_server.modules.form.dtos;
 
+import com.tgd.maintenance_soft_server.modules.form.models.FormFieldType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,13 +10,14 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FormRequestDto {
-
+public class FormFieldRequestDto {
     private String name;
 
-    private String description;
+    private FormFieldType type;
 
-    private Long maintenanceTypeId;
+    private Boolean required;
 
-    private List<FormFieldRequestDto> fields;
+    private Integer order;
+
+    private List<String> options;
 }
