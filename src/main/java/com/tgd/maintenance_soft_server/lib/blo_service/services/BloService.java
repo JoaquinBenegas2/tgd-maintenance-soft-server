@@ -60,7 +60,7 @@ public abstract class BloService<REQ, RES, E extends IdentifyingEntity<IE>, ID, 
         List<RES> result = getRepository().findAllByIdentifyingEntity(identifyingEntity).stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
-        
+
         Collections.reverse(result);
 
         return result;

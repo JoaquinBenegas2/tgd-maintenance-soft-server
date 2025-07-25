@@ -127,16 +127,29 @@ public class MaintenanceServiceImpl
             emailRequestDto.setTo(plantSupervisorEmails);
             emailRequestDto.setSubject("⚠️ Critical maintenance");
             emailRequestDto.setEmailType(EmailType.CRITICAL_MAINTENANCE);
+
+            String fixedSlug = encodePlantSlug(plantSlug);
+
             emailRequestDto.setVariables(Map.of(
                     "supervisorName", "Supervisor",
                     "operatorName", userEntity.getName(),
-                    "dashboardUrl", clientBaseUrl + "/" + plantSlug + "/maintenance/" + savedMaintenance.getId()
+                    "dashboardUrl", clientBaseUrl + "/" + fixedSlug + "/maintenance/" + savedMaintenance.getId()
             ));
 
             emailService.sendTemplatedEmail(emailRequestDto);
         }
 
         return responseDto;
+    }
+
+    private String encodePlantSlug(String slug) {
+        int firstDash = slug.indexOf('-');
+        if (firstDash == -1) return slug;
+
+        String prefix = slug.substring(0, firstDash + 1);
+        String rest = slug.substring(firstDash + 1).replace("-", "%20");
+
+        return prefix + rest;
     }
 
     @Override
