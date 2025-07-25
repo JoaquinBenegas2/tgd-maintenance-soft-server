@@ -77,6 +77,8 @@ public class PromptBuilderServiceImpl implements PromptBuilderService {
             sb.append("\n");
         }
 
+        sb.append("Responde absolutamente todo en inglés. Repito, tu respuesta debe ser en inglés por completo.");
+
         System.out.println(sb);
 
         return sb.toString();
@@ -93,6 +95,7 @@ public class PromptBuilderServiceImpl implements PromptBuilderService {
                 .append("Resumen técnico:\n\"\"\"\n")
                 .append(dailySummary)
                 .append("\n\"\"\"")
+                .append("Responde absolutamente todo en inglés. Repito, tu respuesta debe ser en inglés por completo.")
                 .toString();
     }
 }
