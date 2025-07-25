@@ -42,7 +42,7 @@ public class DelayedRouteNotifierScheduler {
     private String clientBaseUrl;
 
     @Transactional
-    @Scheduled(cron = "0 */5 * * * ?") // Cada 5 minutos
+    @Scheduled(cron = "0 */2 * * * ?") // Cada 2 minutos
     public void notifyDelayedRoutes() {
         LocalDate today = LocalDate.now();
 
