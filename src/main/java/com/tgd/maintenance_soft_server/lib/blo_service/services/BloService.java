@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,9 +57,13 @@ public abstract class BloService<REQ, RES, E extends IdentifyingEntity<IE>, ID, 
 
     @Override
     public List<RES> getAll(IE identifyingEntity) {
-        return getRepository().findAllByIdentifyingEntity(identifyingEntity).stream()
+        List<RES> result = getRepository().findAllByIdentifyingEntity(identifyingEntity).stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
+        
+        Collections.reverse(result);
+
+        return result;
     }
 
     @Override
